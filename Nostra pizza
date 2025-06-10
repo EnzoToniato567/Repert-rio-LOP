@@ -1,0 +1,184 @@
+//biblioteca
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct {
+    char nome[50];
+    float valor;
+} Pizza;
+
+typedef struct {
+    char nome[50];
+    int idade; //usei 2 structs para separar
+} Cliente;
+
+Pizza pizzas[10];
+Cliente clientes[10];
+int total_clientes = 0;
+int total_pizzas = 0;
+
+void cadastrar_pizza();
+void cadastrar_cliente();
+void listar_pizzas();
+void listar_clientes();
+void vender_pizzas();
+void finaliza_funcao();
+
+int main() {
+    
+    int opcao;
+    do {
+        printf ("----Nostra pizza----\n");
+        printf ("Escolha uma opção:\n");
+        printf ("1- Cadastrar pizza\n");
+        printf ("2- Cadastrar cliente\n");
+        printf ("3- Listar pizzas\n");
+        printf ("4- Listar clientes\n");
+        printf ("5- Comprar pizza\n");
+        printf ("6- Sair\n");
+        printf ("Escolha uma opção:\n");
+        scanf ("%d", &opcao);
+
+        switch (opcao) {
+            case 1:
+                cadastrar_pizza();
+                break;
+            case 2:
+                cadastrar_cliente();
+                break;
+            case 3:
+                listar_pizzas();
+                break;
+            case 4:
+                listar_clientes();
+                break;
+            case 5:
+                vender_pizzas();
+                break;
+            case 6:
+                printf("Você escolheu sair do menu.\n");
+                break;
+            default:
+                printf("Opção inválida.\n");
+                break;
+        }
+    } while (opcao != 6);
+    finaliza_funcao();
+
+    return 0;
+}
+
+void finaliza_funcao() {
+    printf ("Pressione ENTER para continuar...");
+    getchar();
+    getchar(); 
+}
+
+void cadastrar_pizza() {
+    if (total_pizzas < 10) {
+        printf("Digite o nome da pizza:\n");
+        scanf("%s", pizzas[total_pizzas].nome);
+
+        printf("Digite o valor da pizza:\n");
+        scanf("%f", &pizzas[total_pizzas].valor);
+        
+        printf ("Pizza cadastrada!\n");
+        total_pizzas++;
+    } else {
+        printf("Limite de pizzas atingido!\n");
+    }
+    finaliza_funcao();
+}
+
+void cadastrar_cliente() {
+    if (total_clientes < 10) {
+        printf("Digite seu nome:\n");
+        scanf("%s", clientes[total_clientes].nome);
+
+        printf("Digite sua idade:\n");
+        scanf("%d", &clientes[total_clientes].idade);
+        
+        printf ("Cliente cadastrado!\n");
+        total_clientes++;
+    } else {
+        printf("Limite de clientes atingido!\n");
+    }
+    finaliza_funcao();
+}
+
+void listar_pizzas() {
+    for (int i = 0; i < total_pizzas; i++) {
+        printf ("Pizza %d: %s\n", i + 1, pizzas[i].nome);
+        printf ("Valor: R$ %.2f\n", pizzas[i].valor);
+    }
+    finaliza_funcao();
+}
+
+void listar_clientes() {
+    for (int i = 0; i < total_clientes; i++) {
+        printf ("Nome do cliente %d: %s\n", i + 1, clientes[i].nome);
+        printf ("Idade: %d\n", clientes[i].idade);
+    }
+    finaliza_funcao();
+}
+
+void vender_pizzas() {
+    int num_cliente, num_pizza, qnt_pizza;
+    float total = 0;
+
+    if (total_clientes == 0) {
+        
+        printf ("Nenhum cliente cadastrado.\n");
+        return;
+    }
+    if (total_pizzas == 0) {
+        
+        printf ("Nenhuma pizza cadastrada.\n");
+        return;
+    }
+
+    printf("Clientes cadastrados:\n");
+    for (int i = 0; i < total_clientes; i++) {
+        
+        printf ("Nome do cliente %d: %s\n", i + 1, clientes[i].nome);
+        printf ("Idade: %d\n", clientes[i].idade);
+    }
+
+    printf("Digite o número do cliente:\n");
+    scanf("%d", &num_cliente);
+
+    if (num_cliente > total_clientes) {
+        
+        printf ("Cliente inválido!\n");
+        return;
+    }
+
+    printf("Pizzas disponíveis:\n");
+    for (int i = 0; i < total_pizzas; i++) {
+        
+        printf ("Pizza %d: %s\n", i + 1, pizzas[i].nome);
+        printf ("Valor: R$ %.2f\n", pizzas[i].valor);
+    }
+
+    printf("Quantas pizzas você deseja comprar?\n");
+    scanf("%d", &qnt_pizza);
+
+    for (int i = 0; i < qnt_pizza; i++) {
+        printf ("Digite o número da pizza %d:\n", i + 1);
+        scanf ("%d", &num_pizza);
+
+        if (num_pizza > total_pizzas) {
+            printf("Pizza inválida!\n");
+        } else {
+            printf ("Adicionado:\n");
+            printf ("Pizza: %s\n", pizzas[num_pizza - 1].nome);
+            printf ("Valor: R$ %.2f\n", pizzas[num_pizza - 1].valor);
+            total += pizzas[num_pizza - 1].valor;
+        }
+    }
+
+    printf("Valor final: R$ %.2f\n", total);
+    finaliza_funcao();
+}
