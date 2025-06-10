@@ -1,0 +1,177 @@
+//biblioteca 
+
+#include <stdio.h> //fiz em base do código anterior
+#include <locale.h>
+
+typedef struct {
+    char nome[30];
+    char genero[30];
+    char banda[50];
+    int ano;
+    float valor_cd;
+    int qnt_cd;
+} Disco;
+
+Disco discos[10];
+int total = 0;
+
+void cadastrar_cd();
+void vender_cd();
+void buscar_cd();
+void finaliza_funcao();
+
+int main () {
+    setlocale(LC_ALL, "");
+    int opcao;
+
+    do {
+        printf ("----Som & Arte----\n");
+        printf ("1- Cadastrar CD\n");
+        printf ("2- Vender CD\n");
+        printf ("3- Buscar CD por gênero\n");
+        printf ("0- Sair\n");
+        printf ("Selecione uma opção:\n");
+        scanf ("%d", &opcao);
+
+        switch (opcao) {
+            case 1:
+                cadastrar_cd();
+                break;
+            case 2:
+                vender_cd();
+                break;
+            case 3:
+                buscar_cd();
+                break;
+            case 0:
+                printf ("Você escolheu sair do menu.\n");
+                break;
+            default:
+                printf ("Opção inválida.\n");
+        }
+    } while (opcao != 0);
+
+    return 0;
+}
+
+void finaliza_funcao() {
+    printf("Pressione ENTER para continuar...");
+    getchar();
+    getchar();
+}
+
+void cadastrar_cd() {
+    
+    if (total >= 10) {
+        printf("Limite de CD´s cadastrados atingido!\n");
+        finaliza_funcao();
+        return;
+    }
+    printf ("----Menu cadastro----\n");
+    printf ("Nome do CD:\n");
+    scanf ("%s", discos[total].nome);
+    printf ("Gênero do CD:\n");
+    scanf ("%s", discos[total].genero);
+    printf ("Nome da banda:\n");
+    scanf ("%s", discos[total].banda);
+    printf ("Ano do CD:\n");
+    scanf ("%d", &discos[total].ano);
+    printf ("Valor do CD:\n");
+    scanf ("%f", &discos[total].valor_cd);
+    printf ("Quantidade em estoque:\n");
+    scanf ("%d", &discos[total].qnt_cd);
+
+    printf ("CD cadastrado!\n");
+    total++;
+
+    finaliza_funcao();
+}
+
+void vender_cd() {
+    
+    char nome_cd[30];
+    int qnt_comprada;
+    float valor_pago, valor_total, troco;
+    int cd_encontrado = 0;
+
+    if (total == 0) {
+        printf("Nenhum produto cadastrado.\n");
+        finaliza_funcao();
+        return;
+    }
+
+    printf ("----Menu vendas----\n");
+    printf ("Digite o nome do CD para realizar a compra:\n");
+    scanf ("%s", nome_cd);
+
+    for (int i = 0; i < total; i++) {
+        if (discos[i].nome && nome_cd == 0) { // como há 2 variáveis iguais, usei ele no if 2 vezes, mas troquei os nomes
+            cd_encontrado = 1;
+            printf ("Nome do CD: %s\n", discos[i].nome);
+            printf ("Gênero do CD: %s\n", discos[i].genero);
+            printf ("Nome da banda: %s\n", discos[i].banda);
+            printf ("Ano do CD: %d\n", discos[i].ano);
+            printf ("Valor do CD: R$ %.2f\n", discos[i].valor_cd);
+            printf ("Quantidade em estoque: %d\n", discos[i].qnt_cd);
+
+            if (discos[i].qnt_cd == 0) {
+                printf("Produto esgotado!\n");
+                break;
+            }
+
+            printf("Quantos CD's deseja comprar?\n");
+            scanf("%d", &qnt_comprada);
+
+            if (qnt_comprada > discos[i].qnt_cd) {
+                printf("Quantidade em estoque insuficiente.\n");
+            } else {
+                valor_total = discos[i].valor_cd * qnt_comprada;
+                printf("Valor total da compra: R$ %.2f\n", valor_total);
+                printf("Informe o valor pago:\n");
+                scanf("%f", &valor_pago);
+
+                if (valor_pago < valor_total) {
+                    printf("Valor insuficiente para a compra.\n");
+                } else {
+                    troco = valor_pago - valor_total;
+                    discos[i].qnt_cd -= qnt_comprada;
+                    printf ("Disco vendido! Troco ao cliente: R$ %.2f\n", troco);
+                }
+            }
+            break;
+        }
+    }
+
+    if (cd_encontrado == 0) {
+        printf("Nenhum CD foi encontrado\n");
+    }
+    finaliza_funcao();
+}
+
+void buscar_cd() {
+    
+    char genero_cd[30];
+    int cd_encontrado = 0;
+
+    printf ("----Menu busca----\n");
+    printf ("Digite o gênero para busca:\n");
+    scanf ("%s", genero_cd);
+
+    for (int i = 0; i < total; i++) {
+        if (discos[i].genero && genero_cd == 0) { // mesma coisa aqui
+        cd_encontrado = 1;
+        
+        printf ("Nome do CD: %s\n", discos[i].nome);
+        printf ("Gênero do CD: %s\n", discos[i].genero);
+        printf ("Nome da banda: %s\n", discos[i].banda);
+        printf ("Ano do CD: %d\n", discos[i].ano);
+        printf ("Valor do CD: R$ %.2f\n", discos[i].valor_cd);
+        printf ("Quantidade em estoque: %d\n", discos[i].qnt_cd);
+        }
+    }
+
+    if (cd_encontrado == 0) {
+        printf("Nenhum CD foi encontrado.\n");
+    }
+    finaliza_funcao();
+}
