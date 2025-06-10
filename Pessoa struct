@@ -1,0 +1,26 @@
+#include <locale.h> 
+#include <stdio.h> 
+
+
+struct Pessoa {
+    char nome[50];
+    int idade;
+};
+
+int main () {
+    
+    struct Pessoa p;
+    
+    printf ("Digite seu nome:\n");
+    scanf ("%s", p.nome); //%s para ler char
+    
+    printf ("Digite sua idade:\n");
+    scanf ("%d", &p.idade);  //& para ler números inteiros
+    
+    printf ("Nome: %s\n", p.nome);
+    printf ("Idade: %d\n", p.idade);
+    
+    return 0;
+    
+}
+

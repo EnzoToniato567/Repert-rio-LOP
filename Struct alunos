@@ -1,0 +1,43 @@
+//biblioteca
+
+#include <stdio.h>
+#include <locale.h>
+
+typedef struct { // typedef em vez do 'aluno'
+    char nome[30]; //; no final
+    int idade; //; no final
+    float nota;
+} Aluno; //; após o fechamento da struct e Aluno
+
+Aluno alunos[3]; // array [3] para listar até 3 alunos
+
+void listarAlunos(); // nome da função void implementada
+
+int main() { // função principal deve ser int main (invertido com o void)
+
+
+    for (int i = 0; i < 3; i++) { //parênteses ( no for para funcionar
+        printf("Dados do aluno %d: \n", i + 1); //; no final e , antes do i + 1
+        printf("Nome: ");
+        scanf("%s", alunos[i].nome);
+        printf("Idade: ");
+        scanf("%d", &alunos[i].idade); //; no final e &
+        printf("Nota: ");
+        scanf("%f", &alunos[i].nota); //faltou [i] e ; no final
+    }
+
+    listarAlunos(); //não implementado dentro do void
+
+    return 0; //return no int main
+}
+
+void listarAlunos() { // () para ser igual ao declarado
+    
+    printf ("----Listar alunos----\n"); //para diferenciar 
+    for (int i = 0; i < 3; i++) { //() no for
+        printf("Dados do aluno %d: \n", i + 1); //; no final
+        printf("Nome: %s\n", alunos[i].nome); //; no final
+        printf("Idade: %d\n", alunos[i].idade);
+        printf("Nota: %.2f\n", alunos[i].nota); //faltou alunos[i] antes, depois a 'nota'
+    }
+}
