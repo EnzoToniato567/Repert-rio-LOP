@@ -1,0 +1,143 @@
+//biblioteca 
+
+#include <stdio.h> //usei esse código em base de 2 códigos que havia feito
+#include <locale.h>
+
+typedef struct {
+    char produto[30];
+    char nome[30];
+    int num_produto;
+    float valor;
+    int qnt_produto;
+} Produto;
+
+Produto produtos[10];
+int total = 0;
+
+void cadastrar_produto();
+void informacoes_produto();
+void realizar_compra();
+void finaliza_funcao();
+
+int main () {
+
+    int opcao;
+
+    do {
+        printf ("----SuperMais----\n");
+        printf ("1- Cadastrar produto\n");
+        printf ("2- Ver informações do produto\n");
+        printf ("3- Realizar compra\n");
+        printf ("0- Sair\n");
+        printf ("Selecione uma opção:\n");
+        scanf ("%d", &opcao);
+
+        switch (opcao) {
+            case 1:
+                cadastrar_produto();
+                break;
+            case 2:
+                informacoes_produto();
+                break;
+            case 3:
+                realizar_compra();
+                break;
+            case 0:
+                printf ("Você escolheu sair do menu.\n");
+                break;
+            default:
+                printf ("Opção inválida.\n");
+        }
+    } while (opcao != 0);
+
+    return 0;
+}
+
+void finaliza_funcao() {
+    printf("Pressione ENTER para continuar...");
+    getchar(); //getchar para continuar
+    getchar();
+}
+
+void cadastrar_produto() {
+    
+    if (total >= 10) {
+        printf("Limite de produtos cadastrados atingido!\n");
+        finaliza_funcao(); //usado finaliza função e return para voltar ao menu principal, como foi ensinado
+        return;
+    }
+    printf ("----Menu cadastro----\n");
+    printf ("Número do produto:\n");
+    scanf ("%d", &produtos[total].num_produto);
+    printf ("Nome do funcionário:\n");
+    scanf ("%s", produtos[total].nome);
+    printf ("Nome do produto:\n");
+    scanf ("%s", produtos[total].produto); 
+    printf ("Valor do produto:\n");
+    scanf ("%f", &produtos[total].valor);
+    printf ("Quantidade em estoque:\n");
+    scanf ("%d", &produtos[total].qnt_produto);
+
+    printf ("Produto cadastrado!\n");
+    total++;
+    
+    finaliza_funcao();
+}
+
+void informacoes_produto() {
+    printf ("----Itens cadastrados----\n");
+    if (total == 0) {
+        printf("Nenhum produto cadastrado.\n");
+    } else {
+        for (int i = 0; i < total; i++) {
+        printf ("Nome do funcionário: %s\n", produtos[i].nome);
+        printf ("Número do produto: %d\n", produtos[i].num_produto);
+        printf ("Nome do produto: %s\n", produtos[i].produto);
+        printf ("Valor do produto: R$ %.2f\n", produtos[i].valor);
+        printf ("Quantidade em estoque: %d\n", produtos[i].qnt_produto);
+        }
+    }
+    finaliza_funcao();
+}
+
+void realizar_compra() {
+    
+    int qnt_comprada, num_buscado;
+    int produto_encontrado;
+    
+    printf ("----Realizar compra----\n");
+    if (total == 0) {
+        printf ("Nenhum produto no estoque\n");
+        finaliza_funcao();
+        return;
+    }
+    printf ("Digite o número do produto desejado:\n");
+    scanf("%d", &num_buscado);
+
+    for (int i = 0; i < total; i++) {
+        
+        if (produtos[i].num_produto == num_buscado) {
+            produto_encontrado = 1;
+            printf("Produto encontrado: %s\n", produtos[i].produto);
+            printf("Produtos disponíveis: %d\n", produtos[i].qnt_produto);
+            printf("Quantos produtos desejas comprar?\n");
+            scanf("%d", &qnt_comprada);
+            
+        if (qnt_comprada > 0 && qnt_comprada < produtos[i].qnt_produto) {
+    
+            produtos[i].qnt_produto -= qnt_comprada; //contagem de produtos no estoque diminui conforme realizar compras
+            
+            printf("Compra realizada com sucesso!\n");
+            printf("Quantidade restante: %d\n", produtos[i].qnt_produto);
+        } else {
+            printf("Quantidade inválida ou insuficiente em estoque.\n");
+            break;
+        }
+        
+    }
+        
+    } if (produto_encontrado == 0) {
+        printf("O produto não foi encontrado.\n");
+    }
+    finaliza_funcao();
+}
